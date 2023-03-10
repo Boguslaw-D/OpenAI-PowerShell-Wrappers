@@ -18,6 +18,7 @@ function Start-ChatGPT {
         $message = Read-Host "Prompt"
         $body.messages+=@{"role"="user";"content"=$message}
         $bodyJSON = ($body | ConvertTo-Json -Compress)
+        $bodyJSON = [System.Text.Encoding]::UTF8.GetBytes($bodyJSON)
         try {
             $res = Invoke-WebRequest -Headers $header -Body $bodyJSON -Uri $url -method post
             $output = ($res.content | convertfrom-json).choices.message
